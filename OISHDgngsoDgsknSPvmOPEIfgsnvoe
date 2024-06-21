@@ -1,0 +1,1348 @@
+-- Services
+local players = game:GetService("Players")
+local tweenService = game:GetService("TweenService")
+local runService = game:GetService("RunService")
+local coreGui = game:GetService("CoreGui")
+local lp = game:GetService("Players").LocalPlayer
+local mouse = lp:GetMouse()
+local uis = game:GetService("UserInputService")
+
+-- Variables
+local viewport = workspace.CurrentCamera.ViewportSize
+local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+
+
+local Library = {}
+
+
+function Library:validate(default, options)
+	for i, v in pairs(default) do
+		if options[i] == nil then 
+			options[i] = v
+		end
+	end
+	return options
+end
+
+function Library:tween(object, goal, callback)
+	local tween = tweenService:Create(object, tweenInfo, goal)
+	tween.Completed:Connect(callback or function() end)
+	tween:Play()
+end
+
+function Library:new(options)
+	options = Library:validate({
+		
+		name = "Kaos Beta"
+		
+	}, options or {})
+	
+	local GUI = {
+		CurrentTab = nil
+	}
+	
+	-- Main Frame 
+	do
+		-- StarterGui.Kaos
+		GUI["1"] = Instance.new("ScreenGui", runService:IsStudio() and players.LocalPlayer:WaitForChild("PlayerGui") or coreGui);
+		GUI["1"]["Name"] = [[Kaos]];
+		GUI["1"]["IgnoreGuiInset"] = true
+
+		-- StarterGui.Kaos.Main
+		GUI["2"] = Instance.new("ImageLabel", GUI["1"]);
+		GUI["2"]["BorderSizePixel"] = 0;
+		GUI["2"]["BackgroundColor3"] = Color3.fromRGB(3, 3, 3);
+		GUI["2"]["AnchorPoint"] = Vector2.new(0, 0);
+		GUI["2"]["Image"] = [[rbxassetid://17890000273]];
+		GUI["2"]["Size"] = UDim2.new(0, 650, 0, 400);
+		GUI["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["2"]["Name"] = [[Main]];
+		GUI["2"]["Position"] = UDim2.fromOffset((viewport.X/2) - (GUI["2"].Size.X.Offset /2), (viewport.Y/2) - (GUI["2"].Size.Y.Offset /2));
+
+		-- StarterGui.Kaos.Main.UICorner
+		GUI["3"] = Instance.new("UICorner", GUI["2"]);
+		GUI["3"]["CornerRadius"] = UDim.new(0, 3);
+
+		-- StarterGui.Kaos.Main.DropShadowHolder
+		GUI["4"] = Instance.new("Frame", GUI["2"]);
+		GUI["4"]["ZIndex"] = 0;
+		GUI["4"]["BorderSizePixel"] = 0;
+		GUI["4"]["Size"] = UDim2.new(1, 0, 1, 0);
+		GUI["4"]["Name"] = [[DropShadowHolder]];
+		GUI["4"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.DropShadowHolder.DropShadow
+		GUI["5"] = Instance.new("ImageLabel", GUI["4"]);
+		GUI["5"]["ZIndex"] = 0;
+		GUI["5"]["BorderSizePixel"] = 0;
+		GUI["5"]["SliceCenter"] = Rect.new(49, 49, 450, 450);
+		GUI["5"]["ScaleType"] = Enum.ScaleType.Slice;
+		GUI["5"]["ImageTransparency"] = 0.5;
+		GUI["5"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["5"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+		GUI["5"]["Image"] = [[rbxassetid://6014261993]];
+		GUI["5"]["Size"] = UDim2.new(1, 47, 1, 47);
+		GUI["5"]["BackgroundTransparency"] = 1;
+		GUI["5"]["Name"] = [[DropShadow]];
+		GUI["5"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+		
+		-- StarterGui.Kaos.Main.ContentContainer
+		GUI["1f"] = Instance.new("Frame", GUI["2"]);
+		GUI["1f"]["BorderSizePixel"] = 0;
+		GUI["1f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["1f"]["AnchorPoint"] = Vector2.new(1, 0);
+		GUI["1f"]["Size"] = UDim2.new(1, -115, 0.773, -42);
+		GUI["1f"]["Position"] = UDim2.new(1, -6, 0.03, 71);
+		GUI["1f"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["1f"]["Name"] = [[ContentContainer]];
+		GUI["1f"]["BackgroundTransparency"] = 1;
+	end
+	
+	
+
+
+	-- TobBar Section
+	do
+		-- StarterGui.Kaos.Main.TopBar
+		GUI["6"] = Instance.new("Frame", GUI["2"]);
+		GUI["6"]["BorderSizePixel"] = 0;
+		GUI["6"]["BackgroundColor3"] = Color3.fromRGB(24, 0, 64);
+		GUI["6"]["Size"] = UDim2.new(1, 0, 0, 30);
+		GUI["6"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["6"]["Name"] = [[TopBar]];
+		GUI["6"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.TopBar.UICorner
+		GUI["7"] = Instance.new("UICorner", GUI["6"]);
+		GUI["7"]["CornerRadius"] = UDim.new(0, 3);
+
+		-- StarterGui.Kaos.Main.TopBar.Extension
+		GUI["8"] = Instance.new("Frame", GUI["6"]);
+		GUI["8"]["BorderSizePixel"] = 0;
+		GUI["8"]["BackgroundColor3"] = Color3.fromRGB(24, 0, 64);
+		GUI["8"]["AnchorPoint"] = Vector2.new(0, 1);
+		GUI["8"]["Size"] = UDim2.new(1, 0, 0.5, 0);
+		GUI["8"]["Position"] = UDim2.new(0, 0, 1, 0);
+		GUI["8"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["8"]["Name"] = [[Extension]];
+		GUI["8"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.TopBar.Exit
+		GUI["9"] = Instance.new("ImageLabel", GUI["6"]);
+		GUI["9"]["BorderSizePixel"] = 0;
+		GUI["9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["9"]["Image"] = [[http://www.roblox.com/asset/?id=6031094678]];
+		GUI["9"]["Size"] = UDim2.new(0, 22, 0, 22);
+		GUI["9"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["9"]["BackgroundTransparency"] = 1;
+		GUI["9"]["Name"] = [[Exit]];
+		GUI["9"]["Position"] = UDim2.new(0.96, 0, 0, 4);
+
+		-- StarterGui.Kaos.Main.TopBar.Minimize
+		GUI["a"] = Instance.new("ImageLabel", GUI["6"]);
+		GUI["a"]["BorderSizePixel"] = 0;
+		GUI["a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["a"]["Image"] = [[http://www.roblox.com/asset/?id=6023426930]];
+		GUI["a"]["Size"] = UDim2.new(0, 22, 0, 22);
+		GUI["a"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["a"]["BackgroundTransparency"] = 1;
+		GUI["a"]["Name"] = [[Minimize]];
+		GUI["a"]["Position"] = UDim2.new(0.93, 0, 0, 4);
+	end
+	
+	
+	local UserInputService = game:GetService("UserInputService")
+	local TweenService = game:GetService("TweenService")
+
+	local imageLabel = GUI["2"]  
+
+	local dragFrame = Instance.new("Frame")
+	dragFrame.Size = UDim2.new(1, 0, 0, 50)  
+	dragFrame.Position = UDim2.new(0, 0, 0, 0) 
+	dragFrame.BackgroundTransparency = 1  
+	dragFrame.Parent = imageLabel 
+
+	local dragging = false
+	local dragInput
+	local dragStart
+	local startPos
+
+	local function update(input)
+		local delta = input.Position - dragStart
+		local newPosition = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		imageLabel.Position = newPosition
+	end
+
+	dragFrame.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = imageLabel.Position
+
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+
+	dragFrame.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			update(input)
+		end
+	end)
+	
+	local MainFrameLabel = GUI["2"]
+	local ImageClose = GUI["9"]
+	local minimize = GUI["a"]
+
+	-- Assuming GUI["9"] is your existing ImageLabel that you want to close
+	local exitButton = Instance.new("TextButton")
+	exitButton.Name = "ExitButton"
+	exitButton.Size = UDim2.new(0, 22, 0, 22)  -- Adjust size as needed to cover GUI["9"]
+	exitButton.Position = UDim2.new(0.96, 0, 0, 4)  -- Adjust position to match GUI["9"]
+	exitButton.BackgroundTransparency = 1  -- Fully transparent background
+	exitButton.Text = ""  -- No visible text
+	exitButton.Parent = GUI["6"]  -- Parent it to the same parent as GUI["9"]
+
+
+	-- Function to close the MainFrameLabel (GUI["2"])
+	local function closeMainFrameLabel()
+		MainFrameLabel.Visible = false  -- Hide the MainFrameLabel when the button is clicked
+	end
+
+	-- Connect the exitButton click event to closeMainFrameLabel function
+	exitButton.MouseButton1Click:Connect(closeMainFrameLabel)
+
+
+	
+	-- BottomBar Section 
+	do
+		-- StarterGui.Kaos.Main.BottomBar
+		GUI["b"] = Instance.new("Frame", GUI["2"]);
+		GUI["b"]["BorderSizePixel"] = 0;
+		GUI["b"]["BackgroundColor3"] = Color3.fromRGB(18, 0, 51);
+		GUI["b"]["Size"] = UDim2.new(1, 0, 0, 30);
+		GUI["b"]["Position"] = UDim2.new(0, 0, 0.92, 0);
+		GUI["b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["b"]["Name"] = [[BottomBar]];
+		GUI["b"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.BottomBar.UICorner
+		GUI["c"] = Instance.new("UICorner", GUI["b"]);
+		GUI["c"]["CornerRadius"] = UDim.new(0, 3);
+
+		-- StarterGui.Kaos.Main.BottomBar.Version
+		GUI["d"] = Instance.new("TextLabel", GUI["b"]);
+		GUI["d"]["BorderSizePixel"] = 0;
+		GUI["d"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["d"]["TextSize"] = 12;
+		GUI["d"]["FontFace"] = Font.new([[rbxassetid://12187365977]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+		GUI["d"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["d"]["BackgroundTransparency"] = 1;
+		GUI["d"]["Size"] = UDim2.new(0.16, 0, 1, 0);
+		GUI["d"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["d"]["Text"] = [[Version 1.2.1]];
+		GUI["d"]["Name"] = [[Version]];
+
+		-- StarterGui.Kaos.Main.BottomBar.User
+		GUI["e"] = Instance.new("TextLabel", GUI["b"]);
+		GUI["e"]["TextWrapped"] = true;
+		GUI["e"]["BorderSizePixel"] = 0;
+		GUI["e"]["TextXAlignment"] = Enum.TextXAlignment.Right;
+		GUI["e"]["TextYAlignment"] = Enum.TextYAlignment.Top;
+		GUI["e"]["TextScaled"] = true;
+		GUI["e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["e"]["TextSize"] = 14;
+		GUI["e"]["FontFace"] = Font.new([[rbxassetid://12187365977]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+		GUI["e"]["TextColor3"] = Color3.fromRGB(127, 127, 127);
+		GUI["e"]["BackgroundTransparency"] = 1;
+		GUI["e"]["Size"] = UDim2.new(0.14538, 0, 0.5, 0);
+		GUI["e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["e"]["Text"] = [[@NaN]];
+		GUI["e"]["Name"] = [[User]];
+		GUI["e"]["Position"] = UDim2.new(0.845, 0, -0.1, 0);
+
+		-- StarterGui.Kaos.Main.BottomBar.User.getUser
+		GUI["f"] = Instance.new("LocalScript", GUI["e"]);
+		GUI["f"]["Name"] = [[getUser]];
+
+		-- StarterGui.Kaos.Main.BottomBar.Title
+		GUI["10"] = Instance.new("TextLabel", GUI["b"]);
+		GUI["10"]["BorderSizePixel"] = 0;
+		GUI["10"]["TextYAlignment"] = Enum.TextYAlignment.Bottom;
+		GUI["10"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["10"]["TextSize"] = 14;
+		GUI["10"]["FontFace"] = Font.new([[rbxassetid://12187365977]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+		GUI["10"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["10"]["BackgroundTransparency"] = 1;
+		GUI["10"]["Size"] = UDim2.new(0.16, 0, 1, 0);
+		GUI["10"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["10"]["Text"] = options["name"];
+		GUI["10"]["Name"] = [[Title]];
+		GUI["10"]["Position"] = UDim2.new(0, 0, -1, 0);
+		
+		local userLabel = GUI["e"]
+		local versionLabel = GUI["d"]
+
+		local function ChangeTxt()
+			userLabel.Text = "@" .. lp.DisplayName
+			wait(1)
+		end
+		
+		local function ChangeVersion()
+			versionLabel.Text = "1.0.0"
+			wait(1)
+		end
+
+		ChangeTxt()
+		ChangeVersion()
+
+	end
+	
+	-- Navigation
+	do
+		-- StarterGui.Kaos.Main.Navigation
+		GUI["12"] = Instance.new("Frame", GUI["2"]);
+		GUI["12"]["BorderSizePixel"] = 0;
+		GUI["12"]["BackgroundColor3"] = Color3.fromRGB(7, 7, 7);
+		GUI["12"]["Size"] = UDim2.new(0.004, 100, 1, -125);
+		GUI["12"]["Position"] = UDim2.new(0, 3, 0, 75);
+		GUI["12"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["12"]["Name"] = [[Navigation]];
+		GUI["12"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.Navigation.UICorner
+		GUI["13"] = Instance.new("UICorner", GUI["12"]);
+		GUI["13"]["CornerRadius"] = UDim.new(0, 3);
+
+		-- StarterGui.Kaos.Main.Navigation.Hide
+		GUI["14"] = Instance.new("Frame", GUI["12"]);
+		GUI["14"]["BorderSizePixel"] = 0;
+		GUI["14"]["BackgroundColor3"] = Color3.fromRGB(7, 7, 7);
+		GUI["14"]["Size"] = UDim2.new(1, 0, 0, 20);
+		GUI["14"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["14"]["Name"] = [[Hide]];
+		GUI["14"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.Navigation.Hide2
+		GUI["15"] = Instance.new("Frame", GUI["12"]);
+		GUI["15"]["BorderSizePixel"] = 0;
+		GUI["15"]["BackgroundColor3"] = Color3.fromRGB(7, 7, 7);
+		GUI["15"]["AnchorPoint"] = Vector2.new(1, 0);
+		GUI["15"]["Size"] = UDim2.new(0, 20, 1, 0);
+		GUI["15"]["Position"] = UDim2.new(1, 0, 0, 0);
+		GUI["15"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["15"]["Name"] = [[Hide2]];
+		GUI["15"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.Navigation.ButtonHolder
+		GUI["16"] = Instance.new("Frame", GUI["12"]);
+		GUI["16"]["BorderSizePixel"] = 0;
+		GUI["16"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+		GUI["16"]["Size"] = UDim2.new(1, 0, 1, 0);
+		GUI["16"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+		GUI["16"]["Name"] = [[ButtonHolder]];
+		GUI["16"]["BackgroundTransparency"] = 1;
+
+		-- StarterGui.Kaos.Main.Navigation.ButtonHolder.UIPadding
+		GUI["17"] = Instance.new("UIPadding", GUI["16"]);
+		GUI["17"]["PaddingTop"] = UDim.new(0, 8);
+		GUI["17"]["PaddingBottom"] = UDim.new(0, 8);
+
+		-- StarterGui.Kaos.Main.Navigation.ButtonHolder.UIListLayout
+		GUI["18"] = Instance.new("UIListLayout", GUI["16"]);
+		GUI["18"]["Padding"] = UDim.new(0, 1);
+		GUI["18"]["SortOrder"] = Enum.SortOrder.LayoutOrder;
+	end
+	
+	function GUI:CreateTab(options)
+		options = Library:validate({
+
+			name = "Test Tab",
+			icon = "rbxassetid://17898619083"
+
+		}, options or {})
+	
+	
+	local Tab = {
+		Hover = false,
+		Active = false
+	}
+	
+	
+		-- Render
+		do
+			-- StarterGui.Kaos.Main.Navigation.ButtonHolder.InactiveTab
+			Tab["1c"] = Instance.new("TextLabel", GUI["16"]);
+			Tab["1c"]["BorderSizePixel"] = 0;
+			Tab["1c"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+			Tab["1c"]["BackgroundColor3"] = Color3.fromRGB(0, 252, 255);
+			Tab["1c"]["TextSize"] = 14;
+			Tab["1c"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+			Tab["1c"]["TextColor3"] = Color3.fromRGB(154, 154, 154);
+			Tab["1c"]["BackgroundTransparency"] = 1;
+			Tab["1c"]["Size"] = UDim2.new(1, 0, 0, 25);
+			Tab["1c"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+			Tab["1c"]["Text"] = options.name;
+			Tab["1c"]["Name"] = [[InactiveTab]];
+			Tab["1c"]["Position"] = UDim2.new(0, 0, 0.10039, 0);
+
+			-- StarterGui.Kaos.Main.Navigation.ButtonHolder.InactiveTab.UIPadding
+			Tab["1d"] = Instance.new("UIPadding", Tab["1c"]);
+			Tab["1d"]["PaddingLeft"] = UDim.new(0, 28);
+
+			-- StarterGui.Kaos.Main.Navigation.ButtonHolder.InactiveTab.Icon
+			Tab["1e"] = Instance.new("ImageLabel", Tab["1c"]);
+			Tab["1e"]["BorderSizePixel"] = 0;
+			Tab["1e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+			Tab["1e"]["ImageColor3"] = Color3.fromRGB(154, 154, 154);
+			Tab["1e"]["AnchorPoint"] = Vector2.new(0, 0.5);
+			Tab["1e"]["Image"] = options.icon
+			Tab["1e"]["Size"] = UDim2.new(0, 18, 0, 18);
+			Tab["1e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+			Tab["1e"]["BackgroundTransparency"] = 1;
+			Tab["1e"]["Name"] = [[Icon]];
+			Tab["1e"]["Position"] = UDim2.new(0, -24, 0.5, 0);
+			
+			-- StarterGui.Kaos.Main.ContentContainer.HomeTab
+			Tab["20"] = Instance.new("ScrollingFrame", GUI["1f"]);
+			Tab["20"]["BorderSizePixel"] = 0;
+			Tab["20"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+			Tab["20"]["Name"] = [[HomeTab]];
+			Tab["20"]["Selectable"] = false;
+			Tab["20"]["Size"] = UDim2.new(1, 0, 1, 0);
+			Tab["20"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+			Tab["20"]["ScrollBarThickness"] = 0;
+			Tab["20"]["BackgroundTransparency"] = 1;
+			Tab["20"]["SelectionGroup"] = false;
+			Tab["20"]["Visible"] = false;
+			
+			-- StarterGui.Kaos.Main.ContentContainer.HomeTab.UIPadding
+			Tab["21"] = Instance.new("UIPadding", Tab["20"]);
+			Tab["21"]["PaddingTop"] = UDim.new(0, 1);
+			Tab["21"]["PaddingRight"] = UDim.new(0, 1);
+			Tab["21"]["PaddingLeft"] = UDim.new(0, 15);
+			Tab["21"]["PaddingBottom"] = UDim.new(0, 1);
+
+			-- StarterGui.Kaos.Main.ContentContainer.HomeTab.UICorner
+			Tab["22"] = Instance.new("UICorner", Tab["20"]);
+			Tab["22"]["CornerRadius"] = UDim.new(0, 3);
+
+			-- StarterGui.Kaos.Main.ContentContainer.HomeTab.UIListLayout
+			Tab["23"] = Instance.new("UIListLayout", Tab["20"]);
+			Tab["23"]["Padding"] = UDim.new(0, 6);
+			Tab["23"]["SortOrder"] = Enum.SortOrder.LayoutOrder;
+		end
+	
+		-- Methods
+		function Tab:Activate()
+			if not Tab.Active then
+				if GUI.CurrentTab ~= nil then
+					GUI.CurrentTab:DeActivate()
+				end
+				
+				Tab.Active = true
+				Library:tween(Tab["1c"], {BackgroundTransparency = .8})
+				Library:tween(Tab["1c"], {TextColor3 = Color3.fromRGB(255, 255, 255)})
+				Library:tween(Tab["1e"], {ImageColor3 = Color3.fromRGB(255, 255, 255)})
+				Tab["20"].Visible = true
+				
+				GUI.CurrentTab = Tab
+			end
+		end
+		
+		function Tab:DeActivate()
+			if Tab.Active then 
+				Tab.Active = false
+				Tab.Hover = false
+				Library:tween(Tab["1c"], {TextColor3 = Color3.fromRGB(153, 153, 153)})
+				Library:tween(Tab["1e"], {ImageColor3 = Color3.fromRGB(153, 153, 153)})
+				Library:tween(Tab["1c"], {BackgroundTransparency = 1})
+				Tab["20"].Visible = false
+			end
+		end
+		
+		-- Functions/Logic
+		
+		do
+			Tab["1c"].MouseEnter:Connect(function()
+				Tab.Hover = true 
+				if not Tab.Active then
+					Library:tween(Tab["1c"], {TextColor3 = Color3.fromRGB(255, 255, 255)})
+					Library:tween(Tab["1e"], {ImageColor3 = Color3.fromRGB(255, 255, 255)})
+				end
+			end)
+
+			Tab["1c"].MouseLeave:Connect(function()
+				Tab.Hover = false 
+				if not Tab.Active then
+					Library:tween(Tab["1c"], {TextColor3 = Color3.fromRGB(153, 153, 153)})
+					Library:tween(Tab["1e"], {ImageColor3 = Color3.fromRGB(153, 153, 153)})
+				end
+			end)
+
+			uis.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if Tab.Hover then 
+						Tab:Activate()
+					end
+				end
+			end)
+
+			if GUI.CurrentTab == nil then
+				Tab:Activate()
+			end
+		end
+		
+		function Tab:Button(options)
+			options = Library:validate({
+				name = "Test Button",
+				callback = function() end
+
+			}, options or {})
+			
+			local Button = {
+				Hover = false, 
+				MouseDown = false
+			}
+			
+			-- Render 
+			do
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Button
+				Button["24"] = Instance.new("Frame", Tab["20"]);
+				Button["24"]["BorderSizePixel"] = 0;
+				Button["24"]["BackgroundColor3"] = Color3.fromRGB(0, 201, 201);
+				Button["24"]["Size"] = UDim2.new(0.972, 0, 0.01, 25);
+				Button["24"]["Position"] = UDim2.new(0.01163, 0, 0.2, 0);
+				Button["24"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Button["24"]["Name"] = [[Button]];
+				Button["24"]["BackgroundTransparency"] = 0.95;
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Button.Title
+				Button["25"] = Instance.new("TextLabel", Button["24"]);
+				Button["25"]["BorderSizePixel"] = 0;
+				Button["25"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+				Button["25"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Button["25"]["TextSize"] = 14;
+				Button["25"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+				Button["25"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+				Button["25"]["BackgroundTransparency"] = 1;
+				Button["25"]["Size"] = UDim2.new(0.98782, -25, 1, 0);
+				Button["25"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Button["25"]["Text"] = options.name
+				Button["25"]["Name"] = [[Title]];
+				Button["25"]["Position"] = UDim2.new(0.01218, 0, 0, 0);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Button.UIPadding
+				Button["26"] = Instance.new("UIPadding", Button["24"]);
+				Button["26"]["PaddingTop"] = UDim.new(0, 6);
+				Button["26"]["PaddingRight"] = UDim.new(0, 6);
+				Button["26"]["PaddingLeft"] = UDim.new(0, 6);
+				Button["26"]["PaddingBottom"] = UDim.new(0, 6);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Button.Icon
+				Button["27"] = Instance.new("ImageLabel", Button["24"]);
+				Button["27"]["BorderSizePixel"] = 0;
+				Button["27"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Button["27"]["AnchorPoint"] = Vector2.new(1, 0);
+				Button["27"]["Image"] = [[rbxassetid://17898941161]];
+				Button["27"]["Size"] = UDim2.new(0, 25, 0, 25);
+				Button["27"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Button["27"]["BackgroundTransparency"] = 1;
+				Button["27"]["Name"] = [[Icon]];
+				Button["27"]["Position"] = UDim2.new(1, 0, -0.2, 0);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Button.UICorner
+				Button["28"] = Instance.new("UICorner", Button["24"]);
+				Button["28"]["CornerRadius"] = UDim.new(0, 3);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Button.UIStroke
+				Button["29"] = Instance.new("UIStroke", Button["24"]);
+				Button["29"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+				Button["29"]["Color"] = Color3.fromRGB(0, 54, 57);
+				
+				
+			end
+			
+			-- Methods
+			function Button:SetText(text)
+				Button["25"].Text = text
+				options.name = text
+			end
+			
+			function Button:SetCallBack(fn)
+				options.callback = fn
+			end
+			
+			-- Logic
+			do
+				Button["24"].MouseEnter:Connect(function()
+					Button.Hover = true
+					
+					Library:tween(Button["29"], {Color = Color3.fromRGB(0, 150, 158)})			
+				end)
+				
+				Button["24"].MouseLeave:Connect(function()
+					Button.Hover = false
+					
+					if not Button.MouseDown then
+						Library:tween(Button["29"], {Color = Color3.fromRGB(0, 54, 57)})
+					end
+				end)
+				
+				uis.InputBegan:Connect(function(input, gpe)
+					if gpe then return end
+					
+					if input.UserInputType == Enum.UserInputType.MouseButton1 and Button.Hover then 
+						Button.MouseDown = true
+						Library:tween(Button["24"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+						Library:tween(Button["24"], {BackgroundTransparency = 0.95})
+						Library:tween(Button["29"], {Color = Color3.fromRGB(0, 54, 57)})
+						
+						options.callback()
+					end
+				end)
+				
+				uis.InputEnded:Connect(function(input, gpe)
+					if gpe then return end
+
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then 
+						Button.MouseDown = false
+						
+						if Button.Hover then
+							Library:tween(Button["24"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Button["29"], {Color = Color3.fromRGB(0, 150, 158)})	
+						else
+							Library:tween(Button["24"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Button["29"], {Color = Color3.fromRGB(0, 20, 21)})
+						end
+					end
+				end)
+			end
+			
+		
+			
+			return Button
+		end
+	
+		function Tab:Label(options)
+			options = Library:validate({
+
+				message = "Test Label"
+
+			}, options or {})
+			
+			local Label = {}
+			
+			
+			-- Render
+			do
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Label
+				Label["2a"] = Instance.new("Frame", Tab["20"]);
+				Label["2a"]["BorderSizePixel"] = 0;
+				Label["2a"]["BackgroundColor3"] = Color3.fromRGB(114, 114, 114);
+				Label["2a"]["Size"] = UDim2.new(0.972, 0, 0.01, 25);
+				Label["2a"]["Position"] = UDim2.new(0.01163, 0, 0.2, 0);
+				Label["2a"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Label["2a"]["Name"] = [[Label]];
+				Label["2a"]["BackgroundTransparency"] = 0.95;
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Label.Title
+				Label["2b"] = Instance.new("TextLabel", Label["2a"]);
+				Label["2b"]["BorderSizePixel"] = 0;
+				Label["2b"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+				Label["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Label["2b"]["TextSize"] = 14;
+				Label["2b"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+				Label["2b"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+				Label["2b"]["BackgroundTransparency"] = 1;
+				Label["2b"]["Size"] = UDim2.new(0.98782, -25, 1, 0);
+				Label["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Label["2b"]["Name"] = [[Title]];
+				Label["2b"]["Text"] = options.message;
+				Label["2b"]["Position"] = UDim2.new(0.01218, 0, 0, 0);
+				Label["2b"]["TextWrapped"] = true;
+				Label["2b"]["TextYAlignment"] = Enum.TextYAlignment.Top;
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Label.UIPadding
+				Label["2c"] = Instance.new("UIPadding", Label["2a"]);
+				Label["2c"]["PaddingTop"] = UDim.new(0, 6);
+				Label["2c"]["PaddingRight"] = UDim.new(0, 6);
+				Label["2c"]["PaddingLeft"] = UDim.new(0, 6);
+				Label["2c"]["PaddingBottom"] = UDim.new(0, 6);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Label.UICorner
+				Label["2d"] = Instance.new("UICorner", Label["2a"]);
+				Label["2d"]["CornerRadius"] = UDim.new(0, 3);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Label.UIStroke
+				Label["2e"] = Instance.new("UIStroke", Label["2a"]);
+				Label["2e"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+				Label["2e"]["Color"] = Color3.fromRGB(44, 44, 44);
+			end
+			
+			
+			-- Methods
+			function Label:SetText(text)
+				options.message = text
+				Label:_update()
+				
+			end
+			
+			function Label:_update()
+				Label["2b"].Text = options.message
+				Label["2b"].Size = UDim2.new(Label["2b"].Size.X.Scale, Label["2b"].Size.X.Offset, 0, math.huge)
+				Label["2b"].Size = UDim2.new(Label["2b"].Size.X.Scale, Label["2b"].Size.X.Offset, 0, Label["2b"].TextBounds.Y)
+				
+				local newSize = UDim2.new(Label["2a"].Size.X.Scale, Label["2a"].Size.X.Offset, 0, Label["2b"].TextBounds.Y + 12)
+				Library:tween(Label["2a"], {Size = newSize})
+			end
+
+		
+			
+			Label:_update()
+			return Label
+		end
+	
+	function Tab:Toggle(options)
+			options = Library:validate({
+
+				title = "Test Toggle",
+				callback = function() end
+
+			}, options or {})
+			
+			local Toggle = {
+				Hover = false,
+				MouseDown = false,
+				State = false
+			}
+			
+			-- Render
+			do
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive
+				Toggle["4b"] = Instance.new("Frame", Tab["20"]);
+				Toggle["4b"]["BorderSizePixel"] = 0;
+				Toggle["4b"]["BackgroundColor3"] = Color3.fromRGB(0, 201, 201);
+				Toggle["4b"]["Size"] = UDim2.new(0.972, 0, 0.01, 25);
+				Toggle["4b"]["Position"] = UDim2.new(0.01163, 0, 0.2, 0);
+				Toggle["4b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Toggle["4b"]["Name"] = [[ToggleInactive]];
+				Toggle["4b"]["BackgroundTransparency"] = 0.95;
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.Title
+				Toggle["4c"] = Instance.new("TextLabel", Toggle["4b"]);
+				Toggle["4c"]["BorderSizePixel"] = 0;
+				Toggle["4c"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+				Toggle["4c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Toggle["4c"]["TextSize"] = 14;
+				Toggle["4c"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+				Toggle["4c"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+				Toggle["4c"]["BackgroundTransparency"] = 1;
+				Toggle["4c"]["Size"] = UDim2.new(0.988, -35, 1, 0);
+				Toggle["4c"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Toggle["4c"]["Text"] = options.title;
+				Toggle["4c"]["Name"] = [[Title]];
+				Toggle["4c"]["Position"] = UDim2.new(0.01218, 0, 0, 0);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.UIPadding
+				Toggle["4d"] = Instance.new("UIPadding", Toggle["4b"]);
+				Toggle["4d"]["PaddingTop"] = UDim.new(0, 6);
+				Toggle["4d"]["PaddingRight"] = UDim.new(0, 6);
+				Toggle["4d"]["PaddingLeft"] = UDim.new(0, 6);
+				Toggle["4d"]["PaddingBottom"] = UDim.new(0, 6);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.UICorner
+				Toggle["4e"] = Instance.new("UICorner", Toggle["4b"]);
+				Toggle["4e"]["CornerRadius"] = UDim.new(0, 3);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.UIStroke
+				Toggle["4f"] = Instance.new("UIStroke", Toggle["4b"]);
+				Toggle["4f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+				Toggle["4f"]["Color"] = Color3.fromRGB(0, 54, 57);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.CheckMarkHolder
+				Toggle["50"] = Instance.new("Frame", Toggle["4b"]);
+				Toggle["50"]["BorderSizePixel"] = 0;
+				Toggle["50"]["BackgroundColor3"] = Color3.fromRGB(49, 49, 49);
+				Toggle["50"]["AnchorPoint"] = Vector2.new(1, 0);
+				Toggle["50"]["Size"] = UDim2.new(0, 20, 0, 20);
+				Toggle["50"]["Position"] = UDim2.new(1, 0, 0, 0);
+				Toggle["50"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Toggle["50"]["Name"] = [[CheckMarkHolder]];
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.CheckMarkHolder.UICorner
+				Toggle["51"] = Instance.new("UICorner", Toggle["50"]);
+				Toggle["51"]["CornerRadius"] = UDim.new(0, 2);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.CheckMarkHolder.UIStroke
+				Toggle["52"] = Instance.new("UIStroke", Toggle["50"]);
+				Toggle["52"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+				Toggle["52"]["Color"] = Color3.fromRGB(82, 82, 82);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.ToggleInactive.CheckMarkHolder.Checkmark
+				Toggle["53"] = Instance.new("ImageLabel", Toggle["50"]);
+				Toggle["53"]["BorderSizePixel"] = 0;
+				Toggle["53"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Toggle["53"]["ImageTransparency"] = 1;
+				Toggle["53"]["ImageColor3"] = Color3.fromRGB(47, 255, 0);
+				Toggle["53"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				Toggle["53"]["Image"] = [[rbxassetid://18107037810]];
+				Toggle["53"]["Size"] = UDim2.new(1, -2, 1, -2);
+				Toggle["53"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Toggle["53"]["BackgroundTransparency"] = 1;
+				Toggle["53"]["Name"] = [[Checkmark]];
+				Toggle["53"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+			end
+			
+			
+			-- Methods
+		
+			do
+				-- Methods
+				function Toggle:Toggle(b)
+					if b == nil then
+						Toggle.State = not Toggle.State
+					else
+						Toggle.State = b
+					end
+
+					if Toggle.State then
+						Library:tween(Toggle["50"], {BackgroundColor3 = Color3.fromRGB(49, 49, 49)})
+						Library:tween(Toggle["53"], {ImageTransparency = 0})
+					else
+						Library:tween(Toggle["50"], {BackgroundColor3 = Color3.fromRGB(49, 49, 49)})
+						Library:tween(Toggle["53"], {ImageTransparency = 1})
+					end
+					options.callback(Toggle.State)
+			end
+			
+			-- Logic
+			do
+				Toggle["4b"].MouseEnter:Connect(function()
+					Toggle.Hover = true
+
+					Library:tween(Toggle["4f"], {Color = Color3.fromRGB(0, 150, 158)})			
+				end)
+
+				Toggle["4b"].MouseLeave:Connect(function()
+					Toggle.Hover = false
+
+					if not Toggle.MouseDown then
+						Library:tween(Toggle["4f"], {Color = Color3.fromRGB(0, 54, 57)})
+					end
+				end)
+
+				uis.InputBegan:Connect(function(input, gpe)
+					if gpe then return end
+
+					if input.UserInputType == Enum.UserInputType.MouseButton1 and Toggle.Hover then 
+						Toggle.MouseDown = true
+						Library:tween(Toggle["4b"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+						Library:tween(Toggle["4f"], {Color = Color3.fromRGB(0, 54, 57)})
+						
+						Toggle:Toggle()
+					
+					end
+				end)
+
+				uis.InputEnded:Connect(function(input, gpe)
+					if gpe then return end
+
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then 
+						Toggle.MouseDown = false
+
+						if Toggle.Hover then
+							Library:tween(Toggle["4b"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Toggle["4f"], {Color = Color3.fromRGB(0, 150, 158)})		
+						else
+							Library:tween(Toggle["4b"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Toggle["4f"], {Color = Color3.fromRGB(0, 54, 57)})
+						end
+					end
+				end)
+			end
+			end
+			
+			
+			
+			return Toggle
+	end
+	
+	
+	function Tab:Slider(options)
+			options = Library:validate({
+				title = "Test Slider",
+				min = 0,
+				max = 100,
+				default = 50,
+				callback = function(v) print(v) end
+
+			}, options or {})
+			
+			local Slider = {
+				MouseDown = false,
+				Hover = false,
+				Connection = nil,
+				Options = options
+			}
+			
+			-- Render
+			do
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider
+				Slider["2f"] = Instance.new("Frame", Tab["20"]);
+				Slider["2f"]["BorderSizePixel"] = 0;
+				Slider["2f"]["BackgroundColor3"] = Color3.fromRGB(0, 201, 201);
+				Slider["2f"]["Size"] = UDim2.new(0.972, 0, 0.01, 40);
+				Slider["2f"]["Position"] = UDim2.new(0.01163, 0, 0.2, 0);
+				Slider["2f"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Slider["2f"]["Name"] = [[Slider]];
+				Slider["2f"]["BackgroundTransparency"] = 0.95;
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.Title
+				Slider["30"] = Instance.new("TextLabel", Slider["2f"]);
+				Slider["30"]["BorderSizePixel"] = 0;
+				Slider["30"]["TextXAlignment"] = Enum.TextXAlignment.Left;
+				Slider["30"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Slider["30"]["TextSize"] = 14;
+				Slider["30"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+				Slider["30"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+				Slider["30"]["BackgroundTransparency"] = 1;
+				Slider["30"]["Size"] = UDim2.new(0.988, -24, 1, -10);
+				Slider["30"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Slider["30"]["Text"] = options.title
+				Slider["30"]["Name"] = [[Title]];
+				Slider["30"]["Position"] = UDim2.new(0.01218, 0, 0, 0);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.UIPadding
+				Slider["31"] = Instance.new("UIPadding", Slider["2f"]);
+				Slider["31"]["PaddingTop"] = UDim.new(0, 6);
+				Slider["31"]["PaddingRight"] = UDim.new(0, 6);
+				Slider["31"]["PaddingLeft"] = UDim.new(0, 6);
+				Slider["31"]["PaddingBottom"] = UDim.new(0, 6);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.UIStroke
+				Slider["32"] = Instance.new("UIStroke", Slider["2f"]);
+				Slider["32"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+				Slider["32"]["Color"] = Color3.fromRGB(0, 54, 57);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.Value
+				Slider["33"] = Instance.new("TextLabel", Slider["2f"]);
+				Slider["33"]["BorderSizePixel"] = 0;
+				Slider["33"]["TextXAlignment"] = Enum.TextXAlignment.Right;
+				Slider["33"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				Slider["33"]["TextSize"] = 14;
+				Slider["33"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+				Slider["33"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+				Slider["33"]["BackgroundTransparency"] = 1;
+				Slider["33"]["AnchorPoint"] = Vector2.new(1, 0);
+				Slider["33"]["Size"] = UDim2.new(0, 24, 0, 24);
+				Slider["33"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Slider["33"]["Text"] = tostring(options.default);
+				Slider["33"]["Name"] = [[Value]];
+				Slider["33"]["Position"] = UDim2.new(1, 0, 0, 0);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.SliderBack
+				Slider["34"] = Instance.new("Frame", Slider["2f"]);
+				Slider["34"]["BorderSizePixel"] = 0;
+				Slider["34"]["BackgroundColor3"] = Color3.fromRGB(0, 9, 9);
+				Slider["34"]["AnchorPoint"] = Vector2.new(0, 1);
+				Slider["34"]["Size"] = UDim2.new(0.98782, 0, 0, 4);
+				Slider["34"]["Position"] = UDim2.new(0.01218, 0, 1, 0);
+				Slider["34"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Slider["34"]["Name"] = [[SliderBack]];
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.SliderBack.UIStroke
+				Slider["35"] = Instance.new("UIStroke", Slider["34"]);
+				Slider["35"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+				Slider["35"]["Color"] = Color3.fromRGB(0, 27, 28);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.SliderBack.Draggable
+				Slider["36"] = Instance.new("Frame", Slider["34"]);
+				Slider["36"]["BorderSizePixel"] = 0;
+				Slider["36"]["BackgroundColor3"] = Color3.fromRGB(0, 131, 131);
+				Slider["36"]["Size"] = UDim2.new(0.5, 0, 1, 0);
+				Slider["36"]["Position"] = UDim2.new(-0, 0, 0, 0);
+				Slider["36"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				Slider["36"]["Name"] = [[Draggable]];
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.SliderBack.Draggable.UICorner
+				Slider["37"] = Instance.new("UICorner", Slider["36"]);
+				Slider["37"]["CornerRadius"] = UDim.new(0, 3);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.SliderBack.UICorner
+				Slider["38"] = Instance.new("UICorner", Slider["34"]);
+				Slider["38"]["CornerRadius"] = UDim.new(0, 3);
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Slider.UICorner
+				Slider["39"] = Instance.new("UICorner", Slider["2f"]);
+				Slider["39"]["CornerRadius"] = UDim.new(0, 3);
+			end
+			
+			
+			
+			-- Methods
+			function Slider:SetValue(v)
+				if v == nil then
+					local percentage = math.clamp((mouse.X - Slider["34"].AbsolutePosition.X) / Slider["34"].AbsoluteSize.X, 0, 1)
+					local value = math.floor(((options.max - options.min) * percentage) + options.min)
+
+					Slider["33"].Text = tostring(value)
+					Slider["36"].Size = UDim2.fromScale(percentage, 1)
+				else
+					Slider["33"].Text = tostring(v)
+					Slider["36"].Size = UDim2.fromScale(((v - options.min) / (options.max - options.min)), 1)
+				end
+				options.callback(Slider:GetValue())
+			end
+
+			
+			function Slider:GetValue()
+				return tonumber(Slider["33"].Text)
+			end
+			
+			-- Logic
+			do
+				
+				Slider["2f"].MouseEnter:Connect(function()
+					Slider.Hover = true
+
+					Library:tween(Slider["35"], {Color = Color3.fromRGB(0, 27, 28)})		
+					Library:tween(Slider["36"], {BackgroundColor3 = Color3.fromRGB(0, 227, 227)})	
+				end)
+
+				Slider["2f"].MouseLeave:Connect(function()
+					Slider.Hover = false
+
+					if not Slider.MouseDown then
+						Library:tween(Slider["35"], {Color = Color3.fromRGB(0, 27, 28)})
+						Library:tween(Slider["36"], {BackgroundColor3 = Color3.fromRGB(0, 131, 131)})	
+					end
+				end)
+
+				uis.InputBegan:Connect(function(input, gpe)
+					if gpe then return end
+
+					if input.UserInputType == Enum.UserInputType.MouseButton1 and Slider.Hover then 
+						Slider.MouseDown = true
+						Library:tween(Slider["2f"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+						Library:tween(Slider["2f"], {BackgroundTransparency = 0.95})
+						Library:tween(Slider["35"], {Color = Color3.fromRGB(0, 27, 28)})
+						Library:tween(Slider["36"], {BackgroundColor3 = Color3.fromRGB(0, 227, 227)})	
+					if not Slider.Connection then
+						Slider.Connection = runService.RenderStepped:Connect(function()
+							Slider:SetValue()
+						end)
+					end
+					end
+				end)
+
+				uis.InputEnded:Connect(function(input, gpe)
+					if gpe then return end
+
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then 
+						Slider.MouseDown = false
+
+						if Slider.Hover then
+							Library:tween(Slider["2f"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Slider["35"], {Color = Color3.fromRGB(0, 27, 28)})	
+							Library:tween(Slider["36"], {BackgroundColor3 = Color3.fromRGB(0, 131, 131)})	
+						else
+							Library:tween(Slider["2f"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Slider["35"], {Color = Color3.fromRGB(0, 27, 28)})
+							Library:tween(Slider["36"], {BackgroundColor3 = Color3.fromRGB(0, 131, 131)})	
+						end
+						
+						if Slider.Connection then Slider.Connection:Disconnect() end
+						Slider.Connection = nil
+					end
+				end)
+				
+			end
+			
+			return Slider 
+	end
+	
+		function Tab:Dropdown(options)
+			options = Library:validate({
+				title = "Test Dropdown",
+				callback = function() end,
+				items = {}
+			}, options or {})
+
+			local Dropdown = {
+				Items = {
+				["id"] = {
+							"value"
+				}
+				},
+				Open = false,
+				MouseDown = false,
+				Hover = false,
+				HoveringItem = false
+			}
+
+			-- Render
+			do
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown
+				Dropdown["3a"] = Instance.new("Frame", Tab["20"])
+				Dropdown["3a"].BorderSizePixel = 0
+				Dropdown["3a"].BackgroundColor3 = Color3.fromRGB(0, 201, 201)
+				Dropdown["3a"].ClipsDescendants = true
+				Dropdown["3a"].Size = UDim2.new(0.972, 0, 0.01, 30)
+				Dropdown["3a"].Position = UDim2.new(0.01163, 0, 0.2, 0)
+				Dropdown["3a"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Dropdown["3a"].Name = [[Dropdown]]
+				Dropdown["3a"].BackgroundTransparency = 0.95
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.Title
+				Dropdown["3b"] = Instance.new("TextLabel", Dropdown["3a"])
+				Dropdown["3b"].BorderSizePixel = 0
+				Dropdown["3b"].TextXAlignment = Enum.TextXAlignment.Left
+				Dropdown["3b"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Dropdown["3b"].TextSize = 14
+				Dropdown["3b"].FontFace = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+				Dropdown["3b"].TextColor3 = Color3.fromRGB(255, 255, 255)
+				Dropdown["3b"].BackgroundTransparency = 1
+				Dropdown["3b"].Size = UDim2.new(0.988, -25, 0.343, 30)
+				Dropdown["3b"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Dropdown["3b"].Text = options.title
+				Dropdown["3b"].Name = [[Title]]
+				Dropdown["3b"].Position = UDim2.new(0.01218, 0, -0.25725, 0)
+				Dropdown["3b"]["TextWrapped"] = true;
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.UIPadding
+				Dropdown["3c"] = Instance.new("UIPadding", Dropdown["3a"])
+				Dropdown["3c"].PaddingTop = UDim.new(0, 6)
+				Dropdown["3c"].PaddingRight = UDim.new(0, 6)
+				Dropdown["3c"].PaddingLeft = UDim.new(0, 6)
+				Dropdown["3c"].PaddingBottom = UDim.new(0, 6)
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.Icon
+				Dropdown["3d"] = Instance.new("ImageLabel", Dropdown["3a"])
+				Dropdown["3d"].BorderSizePixel = 0
+				Dropdown["3d"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Dropdown["3d"].AnchorPoint = Vector2.new(1, 0)
+				Dropdown["3d"].Image = [[rbxassetid://17899588973]]
+				Dropdown["3d"].Size = UDim2.new(0, 20, 0, 20)
+				Dropdown["3d"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Dropdown["3d"].BackgroundTransparency = 1
+				Dropdown["3d"].Name = [[Icon]]
+				Dropdown["3d"].Position = UDim2.new(1, 0, -0.03628, 0)
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.UICorner
+				Dropdown["3e"] = Instance.new("UICorner", Dropdown["3a"])
+				Dropdown["3e"].CornerRadius = UDim.new(0, 3)
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.UIStroke
+				Dropdown["3f"] = Instance.new("UIStroke", Dropdown["3a"])
+				Dropdown["3f"].ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+				Dropdown["3f"].Color = Color3.fromRGB(0, 54, 57)
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.OptionHolder
+				Dropdown["40"] = Instance.new("Frame", Dropdown["3a"])
+				Dropdown["40"].Visible = false
+				Dropdown["40"].BorderSizePixel = 0
+				Dropdown["40"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Dropdown["40"].Size = UDim2.new(1, 0, 1, -24)
+				Dropdown["40"].Position = UDim2.new(0, 0, 0, 26)
+				Dropdown["40"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Dropdown["40"].Name = [[OptionHolder]]
+				Dropdown["40"].BackgroundTransparency = 1
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.OptionHolder.UIListLayout
+				Dropdown["41"] = Instance.new("UIListLayout", Dropdown["40"])
+				Dropdown["41"].Padding = UDim.new(0, 4)
+				Dropdown["41"].SortOrder = Enum.SortOrder.LayoutOrder
+			end
+
+			-- Methods 
+			function Dropdown:Add(id, value)
+				local item = {
+					Hover = false,
+					MouseDown = false
+					
+				}
+				if Dropdown.Items[id] ~= nil then
+					return
+				end
+				Dropdown.Items[id] = {
+					instance = {},
+					value = value
+				}
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.OptionHolder.Inactive Option
+				Dropdown.Items[id].instance["42"] = Instance.new("TextLabel", Dropdown["40"])
+				Dropdown.Items[id].instance["42"].BorderSizePixel = 0
+				Dropdown.Items[id].instance["42"].BackgroundColor3 = Color3.fromRGB(14, 14, 14)
+				Dropdown.Items[id].instance["42"].TextSize = 12
+				Dropdown.Items[id].instance["42"].FontFace = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+				Dropdown.Items[id].instance["42"].TextColor3 = Color3.fromRGB(192, 192, 192)
+				Dropdown.Items[id].instance["42"].Size = UDim2.new(1, 0, 0, 20)
+				Dropdown.Items[id].instance["42"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Dropdown.Items[id].instance["42"].Text = id
+				Dropdown.Items[id].instance["42"].Name = [[Inactive Option]]
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.OptionHolder.Inactive Option.UIStroke
+				Dropdown.Items[id].instance["43"] = Instance.new("UIStroke", Dropdown.Items[id].instance["42"])
+				Dropdown.Items[id].instance["43"].ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+				Dropdown.Items[id].instance["43"].Color = Color3.fromRGB(0, 34, 34)
+
+				-- StarterGui.Kaos.Main.ContentContainer.HomeTab.Dropdown.OptionHolder.Inactive Option.UICorner
+				Dropdown.Items[id].instance["44"] = Instance.new("UICorner", Dropdown.Items[id].instance["42"])
+				Dropdown.Items[id].instance["44"].CornerRadius = UDim.new(0, 2)
+				
+				Dropdown.Items[id].instance["42"].MouseEnter:Connect(function()
+					item.Hover = true
+					Dropdown.HoveringItem = true
+					Library:tween(Dropdown.Items[id].instance["43"], {Color = Color3.fromRGB(0, 150, 158)})            
+				end)
+
+				Dropdown.Items[id].instance["42"].MouseLeave:Connect(function()
+					item.Hover = false
+					Dropdown.HoveringItem = false
+					if not item.MouseDown then
+						Library:tween(Dropdown.Items[id].instance["43"], {Color = Color3.fromRGB(0, 54, 57)})
+					end
+				end)
+
+				uis.InputBegan:Connect(function(input, gpe)
+					if gpe then return end
+					
+				
+					if input.UserInputType == Enum.UserInputType.MouseButton1 and item.Hover then 
+						item.MouseDown = true
+						Library:tween(Dropdown.Items[id].instance["42"], {BackgroundColor3 = Color3.fromRGB(14, 14, 14)})
+						Library:tween(Dropdown.Items[id].instance["43"], {Color = Color3.fromRGB(0, 150, 158)})
+
+
+						options.callback(value)
+						Dropdown:toggle()
+					end
+				end)
+
+				uis.InputEnded:Connect(function(input, gpe)
+					if gpe then return end
+					
+					if Dropdown.Items[id] == nil then return end
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then 
+						item.MouseDown = false
+						if item.Hover then
+							Library:tween(Dropdown.Items[id].instance["42"], {BackgroundColor3 = Color3.fromRGB(14, 14, 14)})
+							Library:tween(Dropdown.Items[id].instance["43"], {Color = Color3.fromRGB(0, 150, 158)})    
+						else
+							Library:tween(Dropdown.Items[id].instance["42"], {BackgroundColor3 = Color3.fromRGB(14, 14, 14)})
+							Library:tween(Dropdown.Items[id].instance["43"], {Color = Color3.fromRGB(0, 20, 21)})
+						end
+					end
+				end)
+			end
+
+			function Dropdown:Remove(id)
+				if Dropdown.Items[id] ~= nil then
+					if Dropdown.Items[id].instance ~= nil then
+					for _, v in pairs(Dropdown.Items[id].instance) do
+						v:Destroy()
+					end
+					end
+					Dropdown.Items[id] = nil
+				end
+			end
+
+			function Dropdown:Clear()
+				for id, _ in pairs(Dropdown.Items) do 
+					Dropdown:Remove(id)
+				end
+			end
+
+			function Dropdown:toggle()
+				if Dropdown.Open then
+					Library:tween(Dropdown["3a"], {Size = UDim2.new(0.972, 0, 0, 35)}, function()
+						Dropdown["40"].Visible = false
+					end)
+				else
+					local count = 0
+					for _, v in pairs(Dropdown.Items) do
+						if v ~= nil then
+							count += 1
+						end
+					end
+
+					Dropdown["40"].Visible = true
+					Library:tween(Dropdown["3a"], {Size = UDim2.new(0.972, 0, 0, 30 + (count * 24) + 1)})
+				end
+				Dropdown.Open = not Dropdown.Open
+			end
+
+			-- Logic
+			do
+				Dropdown["3a"].MouseEnter:Connect(function()
+					Dropdown.Hover = true
+					Library:tween(Dropdown["3f"], {Color = Color3.fromRGB(0, 150, 158)})            
+				end)
+
+				Dropdown["3a"].MouseLeave:Connect(function()
+					Dropdown.Hover = false
+					if not Dropdown.MouseDown then
+						Library:tween(Dropdown["3f"], {Color = Color3.fromRGB(0, 54, 57)})
+					end
+				end)
+
+				uis.InputBegan:Connect(function(input, gpe)
+					if gpe then return end
+					if input.UserInputType == Enum.UserInputType.MouseButton1 and Dropdown.Hover then 
+						Dropdown.MouseDown = true
+						Library:tween(Dropdown["3a"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+						Library:tween(Dropdown["3f"], {Color = Color3.fromRGB(0, 150, 158)})
+						
+						if not Dropdown.HoveringItem then
+							Dropdown:toggle()
+						end
+						
+					end
+				end)
+
+				uis.InputEnded:Connect(function(input, gpe)
+					if gpe then return end
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then 
+						Dropdown.MouseDown = false
+						if Dropdown.Hover then
+							Library:tween(Dropdown["3a"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Dropdown["3f"], {Color = Color3.fromRGB(0, 150, 158)})    
+						else
+							Library:tween(Dropdown["3a"], {BackgroundColor3 = Color3.fromRGB(0, 201, 201)})
+							Library:tween(Dropdown["3f"], {Color = Color3.fromRGB(0, 20, 21)})
+						end
+					end
+				end)
+		
+				
+			end
+			
+		
+	
+	
+
+
+
+			return Dropdown
+		end
+
+	
+	
+	
+	return Tab
+end 
+
+	return GUI
+end
+
+return Library
